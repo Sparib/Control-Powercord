@@ -6,7 +6,7 @@
 
 function isURIWeb($address) {
 	$uri = $address -as [System.URI]
-	$uri.AbsoluteURI -ne $null -and $uri.Scheme -match '[http|https]'
+	$null -ne $uri.AbsoluteURI -and $uri.Scheme -match '[http|https]'
 }
 
 function getConsole() {

@@ -4,6 +4,8 @@
     [String] $Tertiary
 )
 
+$PowercordInstallationFolder = "C:\Path\To\Your\Powercord"
+
 function isURIWeb($address) {
 	$uri = $address -as [System.URI]
 	$null -ne $uri.AbsoluteURI -and $uri.Scheme -match '[http|https]'
@@ -52,7 +54,7 @@ $PrevLoc = $(Get-Location);
 try {
 switch -Regex ($Action) {
     "update" {
-        Set-Location "C:\Users\spari\Documents\Powercord" | Out-Null;
+        Set-Location $PowercordInstallationFolder | Out-Null;
         git pull | Out-Null;
         Write-Host -ForegroundColor Green "`nPowercord successfully updated! Restart Discord for changes to take effect.";
     }
@@ -60,14 +62,14 @@ switch -Regex ($Action) {
         Set-Location "C:\Users\spari\Documents\Powercord" | Out-Null;
         Write-Debug "Powercord : $(git pull)";
 
-        $plugins = $(Get-ChildItem -Path "C:\Users\spari\Documents\Powercord\src\Powercord\plugins" -Directory -Force -ErrorAction SilentlyContinue | Select-Object FullName);
+        $plugins = $(Get-ChildItem -Path "$PowercordInstallationFolder\plugins" -Directory -Force -ErrorAction SilentlyContinue | Select-Object FullName);
 
         foreach ($plugin in $plugins) {
             Set-Location $plugin.FullName;
             Write-Debug "$($plugin.FullName) : $(git pull)";
         }
 
-        $themes = $(Get-ChildItem -Path "C:\Users\spari\Documents\Powercord\src\Powercord\themes" -Directory -Force -ErrorAction SilentlyContinue | Select-Object FullName);
+        $themes = $(Get-ChildItem -Path "$PowercordInstallationFolder\themes" -Directory -Force -ErrorAction SilentlyContinue | Select-Object FullName);
 
         foreach ($theme in $themes) {
             Set-Location $theme.FullName;
@@ -77,7 +79,7 @@ switch -Regex ($Action) {
         Write-Host -ForegroundColor Green "`nSuccessfully force updated all plugins, themes, and Powercord! Restart Discord for changes to take effect.";
     }
     "(un)?plug" {
-        Set-Location "C:\Users\spari\Documents\Powercord" | Out-Null;
+        Set-Location $PowercordInstallationFolder | Out-Null;
         npm run $Action | Out-Null;
         Write-Host -ForegroundColor Green "`nPowercord successfully $($Action)ged! Restart Discord for changes to take effect.";
     }
@@ -87,7 +89,7 @@ switch -Regex ($Action) {
         if (-not $(isURIWeb($Tertiary))) { Write-Error -Message "The third argument must be a valid link!" -Category InvalidArgument; }
 
         if ($Secondary -eq "plugin" -or $Secondary -eq "theme") {
-            Set-Location -Path "C:\Users\spari\Documents\Powercord\src\Powercord\$($Secondary)s" | Out-Null;
+            Set-Location -Path "$PowercordInstallationFolder\$($Secondary)s" | Out-Null;
             git clone -q $Tertiary;
 
             Start-Sleep -Milliseconds 10

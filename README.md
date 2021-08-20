@@ -2,11 +2,9 @@
 Powershell script that controls the Powercord Discord-CLI
 
 ## Installation
----
 Save the file anywhere, change the `$PowershellInstallationFolder` variable to the root of you Powercord installation, then add it's folder path to your path variable to make full use of it.
 
 ## Usage
----
 ```
 () is optional
 [] is choice separated by /

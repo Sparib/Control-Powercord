@@ -7,6 +7,11 @@ Save the file anywhere, change the `$PowershellInstallationFolder` variable to t
 
 ## Usage
 ---
+```
+() is optional
+[] is choice separated by /
+{} is your input
+```
 ### Update
 Updates Powercord itself, but only Powercord
 ```
